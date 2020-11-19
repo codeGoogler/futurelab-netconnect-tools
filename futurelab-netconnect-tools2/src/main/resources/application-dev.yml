@@ -1,0 +1,60 @@
+server:
+  port: 8097
+
+spring:
+  application:
+    name: futurelab-netconnect-tools
+  jackson: # molde里面的属性为null时jackson应该不会将其序列化，MVC需要在 加一个注解： @JsonInclude(JsonInclude.Include.NON_NULL)	//注解控制null不序列化
+    default-property-inclusion: non_null
+  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
+    # type: com.alibaba.druid.pool.DruidDataSource
+#    url: jdbc:mysql://114.116.254.19:3306/ai_online_laboratory_test2?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2b8
+#    username: root
+#    password: 8abB11430d944a1c92Ab96258723b6!#
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+    initialSize: 2
+    minIdle: 1
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,config
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    useGlobalDataSourceStat: true
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  type-aliases-package: ai.oline.laboratory.aiolinelaboratory.model
+#  configuration:
+#    mapUnderscoreToCamelCase: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.china.log.service.provider.dal.entity
+
+

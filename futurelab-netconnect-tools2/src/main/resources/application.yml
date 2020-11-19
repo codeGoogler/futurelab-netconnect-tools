@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: dev
+
+# 参考： https://blog.csdn.net/zhiyinweini3/article/details/104349945
