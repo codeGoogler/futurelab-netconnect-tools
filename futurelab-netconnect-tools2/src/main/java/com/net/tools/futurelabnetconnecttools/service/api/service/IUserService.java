@@ -1,6 +1,7 @@
 package com.net.tools.futurelabnetconnecttools.service.api.service;
 
 import com.net.tools.futurelabnetconnecttools.common.req.CommonResponse;
+import com.net.tools.futurelabnetconnecttools.service.api.dto.BaseUserDto;
 import com.net.tools.futurelabnetconnecttools.service.api.dto.StudentDto;
 
 /**
@@ -10,16 +11,19 @@ import com.net.tools.futurelabnetconnecttools.service.api.dto.StudentDto;
 * @Date 2020-11-18
 * @Version 1.0
 */
-public interface IStudentService {
+public interface IUserService {
 
-  CommonResponse<StudentDto> get(Integer id);
+  CommonResponse<BaseUserDto> get(Integer id);
 
-  CommonResponse save(StudentDto dto);
+  CommonResponse save(BaseUserDto dto);
 
-  CommonResponse<StudentDto> page(int num,int size,String keyWords,StudentDto dto);
+  CommonResponse<BaseUserDto> page(int num, int size, String keyWords, BaseUserDto dto);
 
   CommonResponse remove(Integer id);
 
   CommonResponse listRemove(String ids);
 
+  CommonResponse login(BaseUserDto baseUserDto);
+
+  CommonResponse loginOut(BaseUserDto baseUserDto);
 }

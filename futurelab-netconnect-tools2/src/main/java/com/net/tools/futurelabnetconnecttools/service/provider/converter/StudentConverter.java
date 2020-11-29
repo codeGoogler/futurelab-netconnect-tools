@@ -1,7 +1,7 @@
 package com.net.tools.futurelabnetconnecttools.service.provider.converter;
 
+import com.net.tools.futurelabnetconnecttools.service.api.dto.StudentDto;
 import com.net.tools.futurelabnetconnecttools.service.provider.dal.entity.Student;
-import com.china.futurelabnetconnecttools.service.api.dto.StudentDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.mapstruct.Mapper;
