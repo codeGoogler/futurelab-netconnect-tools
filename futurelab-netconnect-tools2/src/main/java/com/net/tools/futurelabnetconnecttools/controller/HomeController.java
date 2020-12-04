@@ -1,8 +1,21 @@
 package com.net.tools.futurelabnetconnecttools.controller;
 
 
+import com.net.tools.futurelabnetconnecttools.common.req.CommonResponse;
+import com.net.tools.futurelabnetconnecttools.service.api.dto.BaseUserDto;
+import com.net.tools.futurelabnetconnecttools.service.api.dto.StudentDto;
+import com.net.tools.futurelabnetconnecttools.service.provider.service.LoginServiceImpl;
+import com.net.tools.futurelabnetconnecttools.utils.ResultUtil;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -17,6 +30,12 @@ public class HomeController {
     @GetMapping("/system/user")
     public String userList(){
         return "user";
+    }
+
+    @ResponseBody
+    @GetMapping("/system/user1")
+    public Map<String,Object> userList2(){
+        return ResultUtil.resultCode(200,"success");
     }
 
     //角色管理
@@ -44,7 +63,12 @@ public class HomeController {
 //    }
     @GetMapping("/loginIn")
     public String loginIn(){
-        return "loginIn";
+        return "loginin";
+    }
+
+    @GetMapping("/getlogin.html")
+    public String loginInhtml(){
+        return "loginin";
     }
 
     @GetMapping("/login/out")
@@ -52,6 +76,26 @@ public class HomeController {
         return "loginout";
     }
 
+    @Autowired(required = false)
+    private LoginServiceImpl loginService;
 
+    /**
+     * @Description 列表分页查询
+     * @Param [num, size, keyWords,dto]
+     * @Author yuyahao
+     * @Date 2020-11-18
+     */
+    @ResponseBody
+    @GetMapping("/come")
+    @ApiOperation(value = "列表查询", httpMethod = "GET")
+    public CommonResponse<StudentDto> login(BaseUserDto baseUserDto) {
+        return loginService.login(baseUserDto);
+    }
+    @ResponseBody
+    @PostMapping("/come2")
+    @ApiOperation(value = "列表查询", httpMethod = "POST")
+    public CommonResponse<StudentDto> login2(@RequestBody  BaseUserDto baseUserDto) {
+        return loginService.login(baseUserDto);
+    }
 
 }

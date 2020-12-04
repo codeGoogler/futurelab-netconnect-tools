@@ -13,15 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) //开启权限注解,默认是关闭的
+//@EnableGlobalMethodSecurity(prePostEnabled = true) //开启权限注解,默认是关闭的
+@Component
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired(required = false)
     MyUserDetailsService myUserDetailsService;
+
+    @Autowired(required = false)
+    UserAuthenticationProvider userAuthenticationProvider;
 
     @Autowired(required = false)
     MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
@@ -40,28 +45,49 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 配置Security security的认证策略, 每个模块配置使用and结尾。
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.s
-        http.formLogin()
-//                .loginPage("/login")
-                .loginProcessingUrl("/user/login/come")
-                .usernameParameter("loginName")
-                .passwordParameter("password")
-//                .defaultSuccessUrl("/index")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)
-                .and()
-                .logout()
-                .logoutUrl("/login/out")
-                .and()
+//                 http
+//                 .formLogin()
+////                .loginPage("/loginIn")
+//                .loginProcessingUrl("/login")
+//                .loginProcessingUrl("/user/login/come")
+//                .usernameParameter("loginName")
+//                .passwordParameter("password")
+//                //.defaultSuccessUrl("/index")
+//                .successHandler(myAuthenticationSuccessHandler)
+//                .failureHandler(myAuthenticationFailureHandler)
+//                .and()
+//                .logout()
+//                .logoutUrl("/login/out")
+//                .and()
 //                .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
 //                .and()
-                .authorizeRequests()
-                .antMatchers("/login","/user/login/come","/user/login/come2","login/out","/loginIn.html").permitAll()
-                .antMatchers("/swagger-ui.html#!/**").permitAll()
-                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .anyRequest().authenticated()// 要求在执行请求要求必须已登录
+//                .authorizeRequests()
+//                .antMatchers("/login","/user/login/come","/user/login/come2","login/out","/loginIn").permitAll()
+//                .antMatchers("/swagger-ui.html#!/**").permitAll()
+//                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+//                .anyRequest().fullyAuthenticated()// 要求在执行请求要求必须已登录
+//                .and()
+//                .csrf().disable();//禁用跨站csrf攻击防御, 否则无法成功登录
+
+
+        http
+                 .formLogin()
+//                .loginPage("/loginIn")
+/*                .loginProcessingUrl("/user/login/come")
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler)*/
                 .and()
-                .csrf().disable();//禁用跨站csrf攻击防御, 否则无法成功登录
+                .authorizeRequests()
+                .antMatchers("/user/login/come1111").permitAll()
+                .antMatchers("/login/login").permitAll()
+                .antMatchers(HttpMethod.POST,"/come2").permitAll()
+                .antMatchers(HttpMethod.GET,"/getlogin.html").permitAll()
+                .antMatchers("/index","/login/out","/loginIn","/system/user1").permitAll()
+                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                .and()
+                .httpBasic().and().authorizeRequests().anyRequest().authenticated();
+
+
     }
 
     // 配置是认证信息
@@ -77,7 +103,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public  void  configure(AuthenticationManagerBuilder  auth)  throws  Exception{
         //调用DetailsService完成用户身份验证              设置密码加密方式
 //        auth.userDetailsService(myUserDetailsService);
-        auth.userDetailsService(myUserDetailsService).passwordEncoder(new CustomPasswordEncoder());
+//        auth.userDetailsService(myUserDetailsService).passwordEncoder(new CustomPasswordEncoder());
+        //这里可启用我们自己的登陆验证逻辑
+        auth.authenticationProvider(userAuthenticationProvider);
     }
 
     // 配置认证方法, http basic登录基础配置

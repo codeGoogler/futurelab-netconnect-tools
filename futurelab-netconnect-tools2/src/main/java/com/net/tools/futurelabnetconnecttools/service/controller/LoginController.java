@@ -8,11 +8,12 @@ import com.net.tools.futurelabnetconnecttools.service.provider.service.LoginServ
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Api(value = "LoginController" , tags = "前端控制器")
-@RestController
+
+@Controller
 @RequestMapping("/user/login")
 public class LoginController {
 
@@ -25,7 +26,7 @@ public class LoginController {
      * @Author yuyahao
      * @Date 2020-11-18
      */
-    @PostMapping("/come")
+    @RequestMapping("/come1111")
     @ApiOperation(value = "列表查询", httpMethod = "POST")
     public CommonResponse<StudentDto> login(@RequestBody  BaseUserDto baseUserDto) {
         return loginService.login(baseUserDto);
