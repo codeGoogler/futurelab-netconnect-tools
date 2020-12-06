@@ -63,12 +63,14 @@ public class HomeController {
 //    }
     @GetMapping("/loginIn")
     public String loginIn(){
+//        return "user";
         return "loginin";
     }
 
     @GetMapping("/getlogin.html")
     public String loginInhtml(){
-        return "loginin";
+        return "menu";
+//        return "loginin";
     }
 
     @GetMapping("/login/out")

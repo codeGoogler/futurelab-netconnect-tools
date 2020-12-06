@@ -8,17 +8,17 @@
 <body>
 
 <!--<form action="/index" method="post">-->
-    <span>用户名：</span><input id="username" type="text" name="username" id="username"/><br>
-    <span>密码：</span><input id="password" type="password" name="password" id="password"><br>
+    <span>用户名：</span><input id="username" type="text" name="username" /><br>
+    <span>密码：</span><input id="password" type="password" name="password" ><br>
     <input type="button" onclick="login()" value="登录">
     <input type="button" onclick="login2()" value="登录2">
 <!--</form>-->
 <script>
     function login(){
         console.log(1233333333333333333333333333333)
-       /* $.ajax({
+         $.ajax({
             type:"POST",
-            url:"/login",
+            url:"/user/login/come",
             data:{
                 'loginName':$("#username").val(),
                 'password':$("#password").val()
@@ -32,7 +32,7 @@
                     alert("登录失败")
                 }
             }
-        });*/
+        });
 
     }
     function login2(){

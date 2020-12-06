@@ -1,6 +1,8 @@
 package com.net.tools.futurelabnetconnecttools.controller;
 
 
+import com.net.tools.futurelabnetconnecttools.common.req.CommonResponseFactory;
+import com.net.tools.futurelabnetconnecttools.utils.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class TestController {
     public String postCheckPrint() {
         String response = restTemplate.getForObject( String.format("https://www.baidu.com"), String.class);
         System.out.println(response);
-        return  response;
+        return    CommonResponseFactory.getInstance().success(ResultUtil.resultCode(200,"SUCCESS")).toString();
     }
 
 }

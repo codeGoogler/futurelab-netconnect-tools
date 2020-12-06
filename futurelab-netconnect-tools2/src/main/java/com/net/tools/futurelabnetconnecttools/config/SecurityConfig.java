@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true) //开启权限注解,默认是关闭的
-@Component
+// https://blog.csdn.net/Cgh_Baby/article/details/108234719
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired(required = false)
@@ -45,47 +45,54 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 配置Security security的认证策略, 每个模块配置使用and结尾。
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//                 http
+                 http
+                 .formLogin()
+                .loginPage("/loginIn")
+                .loginProcessingUrl("/user/login/come")
+                .usernameParameter("loginName")
+                .passwordParameter("password")
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler)
+                .and()
+                .logout()
+//                .logoutUrl("/login/out")
+                .and()
+                .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/login","/user/login/come","/user/login/come2","login/out","/loginIn").permitAll()
+                .antMatchers("/swagger-ui.html#!/**").permitAll()
+                .antMatchers(
+                         "/swagger-ui.html",
+                         "/v2/api-docs", // swagger api json
+                         "/swagger-resources/configuration/ui", // 用来获取支持的动作
+                         "/swagger-resources", // 用来获取api-docs的URI
+                         "/swagger-resources/configuration/security", // 安全选项
+                         "/swagger-resources/**"
+                 ).permitAll()
+                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html","/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                .anyRequest().fullyAuthenticated()// 要求在执行请求要求必须已登录
+                .and()
+                .csrf().disable();//禁用跨站csrf攻击防御, 否则无法成功登录
+
+
+//        http
 //                 .formLogin()
 ////                .loginPage("/loginIn")
-//                .loginProcessingUrl("/login")
-//                .loginProcessingUrl("/user/login/come")
-//                .usernameParameter("loginName")
-//                .passwordParameter("password")
-//                //.defaultSuccessUrl("/index")
+//              .loginProcessingUrl("/user/login/come")
 //                .successHandler(myAuthenticationSuccessHandler)
 //                .failureHandler(myAuthenticationFailureHandler)
 //                .and()
-//                .logout()
-//                .logoutUrl("/login/out")
-//                .and()
-//                .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
-//                .and()
 //                .authorizeRequests()
-//                .antMatchers("/login","/user/login/come","/user/login/come2","login/out","/loginIn").permitAll()
-//                .antMatchers("/swagger-ui.html#!/**").permitAll()
+//                .antMatchers("/user/login/come1111").permitAll()
+//                .antMatchers("/login/login").permitAll()
+//                .antMatchers("/getlogin.html").permitAll()
+//                .antMatchers(HttpMethod.POST,"/come2").permitAll()
+//                .antMatchers("/getlogin.html").permitAll()
+//                .antMatchers("/index","/login/out","/loginIn","/system/user1").permitAll()
 //                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-//                .anyRequest().fullyAuthenticated()// 要求在执行请求要求必须已登录
 //                .and()
-//                .csrf().disable();//禁用跨站csrf攻击防御, 否则无法成功登录
-
-
-        http
-                 .formLogin()
-//                .loginPage("/loginIn")
-/*                .loginProcessingUrl("/user/login/come")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)*/
-                .and()
-                .authorizeRequests()
-                .antMatchers("/user/login/come1111").permitAll()
-                .antMatchers("/login/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/come2").permitAll()
-                .antMatchers(HttpMethod.GET,"/getlogin.html").permitAll()
-                .antMatchers("/index","/login/out","/loginIn","/system/user1").permitAll()
-                .antMatchers(HttpMethod.GET,  "/*.html", "favicon.ico", "/**/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .and()
-                .httpBasic().and().authorizeRequests().anyRequest().authenticated();
+//                .httpBasic().and().authorizeRequests().anyRequest().authenticated();
 
 
     }
