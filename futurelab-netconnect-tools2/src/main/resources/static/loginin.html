@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://cdn.staticfile.org/jquery/1.12.3/jquery.min.js"></script>
+</head>
+<body>
+
+<!--<form action="/index" method="post">-->
+    <span>用户名：</span><input id="username" type="text" name="username" id="username"/><br>
+    <span>密码：</span><input id="password" type="password" name="password" id="password"><br>
+    <input type="button" onclick="login()" value="登录">
+    <input type="button" onclick="login2()" value="登录2">
+<!--</form>-->
+<script>
+    function login(){
+        console.log(1233333333333333333333333333333)
+       /* $.ajax({
+            type:"POST",
+            url:"/login",
+            data:{
+                'loginName':$("#username").val(),
+                'password':$("#password").val()
+            },
+            success:function(res){
+                console.log($("#username").val(),$("#password").val())
+                console.log(res.code)
+                if(res.code == 200){
+                    location.href="/index"
+                }else{
+                    alert("登录失败")
+                }
+            }
+        });*/
+
+    }
+    function login2(){
+        console.log(1233333333333333333333333333333)
+    }
+</script>
+</body>
+</html>
