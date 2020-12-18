@@ -1,19 +1,24 @@
 package com.net.tools.futurelabnetconnecttools.config;
 
+import com.net.tools.futurelabnetconnecttools.config.handler.MyAuthenticationFailureHandler;
+import com.net.tools.futurelabnetconnecttools.config.handler.MyAuthenticationSuccessHandler;
+import com.net.tools.futurelabnetconnecttools.config.handler.UserAuthenticationEntryPointHandler;
+import com.net.tools.futurelabnetconnecttools.fliter.JwtAuthTokenFilter;
 import com.net.tools.futurelabnetconnecttools.service.provider.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -36,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Autowired(required = false)
    UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler;
 
+    @Autowired
+    private JwtAuthTokenFilter jwtAuthTokenFilter;
 
     @Override
     protected UserDetailsService userDetailsService() {
@@ -46,17 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
                  http
-                 .formLogin()
-                .loginPage("/loginIn")
-                .loginProcessingUrl("/user/login/come")
-                .usernameParameter("loginName")
-                .passwordParameter("password")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)
-                .and()
-                .logout()
-//                .logoutUrl("/login/out")
-                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .formLogin()
+//                .loginPage("/loginIn")
+//                .loginProcessingUrl("/user/login/come")
+//                .usernameParameter("loginName")
+//                .passwordParameter("password")
+//                .successHandler(myAuthenticationSuccessHandler)
+//                .failureHandler(myAuthenticationFailureHandler)
+//                .and()
+//                .logout()
+//              //  .logoutUrl("/login/out")
+//                .and()
                 .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
                 .and()
                 .authorizeRequests()
@@ -74,7 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().fullyAuthenticated()// 要求在执行请求要求必须已登录
                 .and()
                 .csrf().disable();//禁用跨站csrf攻击防御, 否则无法成功登录
-
+            //  添加JWT  filter, 在每次http请求前进行拦截
+           http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 //        http
 //                 .formLogin()
@@ -151,4 +160,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return s.equals(charSequence.toString());
         }
     }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 }

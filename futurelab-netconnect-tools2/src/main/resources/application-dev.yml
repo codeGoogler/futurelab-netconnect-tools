@@ -57,6 +57,12 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: com.china.log.service.provider.dal.entity
 
+# JWT的配置
+token:
+  header: Authorization # 令牌自定义标识
+  secret: abcedyyhqwe123sdfgsodufap # 令牌秘钥
+  expireTime: 3600000 # 令牌有效期（默认30分钟）
+
 
 thymeleaf:
   prefix: classpath:/templates/  #prefix：指定模板所在的目录

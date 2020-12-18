@@ -1,4 +1,4 @@
-package com.net.tools.futurelabnetconnecttools.config;
+package com.net.tools.futurelabnetconnecttools.config.handler;
 
 import com.net.tools.futurelabnetconnecttools.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;

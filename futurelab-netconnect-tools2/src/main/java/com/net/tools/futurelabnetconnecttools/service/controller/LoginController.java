@@ -29,7 +29,7 @@ public class LoginController {
      * @Author yuyahao
      * @Date 2020-11-18
      */
-    @RequestMapping("/come")
+    @PostMapping("/come")
     @ApiOperation(value = "列表查询", httpMethod = "POST")
     @ResponseBody
     public CommonResponse<StudentDto> login(@RequestBody  BaseUserDto baseUserDto) {
@@ -45,4 +45,10 @@ public class LoginController {
 //        return loginService.login(baseUserDto);
     }
 
+    @PostMapping("/come3")
+    @ApiOperation(value = "列表查询", httpMethod = "POST")
+    @ResponseBody
+    public CommonResponse<Map<String,Object>> login3(@RequestBody  BaseUserDto baseUserDto) {
+        return CommonResponseFactory.getInstance().success(ResultUtil.resultCode(200,"SUCCESS"));
+    }
 }

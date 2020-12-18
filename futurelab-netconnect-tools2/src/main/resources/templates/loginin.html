@@ -27,7 +27,8 @@
                 console.log($("#username").val(),$("#password").val())
                 console.log(res.code)
                 if(res.code == 200){
-                    location.href="/index"
+                    // location.href="/index"
+                    window.open="/index"
                 }else{
                     alert("登录失败")
                 }
