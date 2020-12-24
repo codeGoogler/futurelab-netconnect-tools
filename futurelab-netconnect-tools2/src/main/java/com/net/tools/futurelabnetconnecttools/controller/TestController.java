@@ -32,4 +32,14 @@ public class TestController {
         return    CommonResponseFactory.getInstance().success(ResultUtil.resultCode(200,"SUCCESS")).toString();
     }
 
+
+    String downLoadUrl = "http://file.futurelab.sit.zretchome.com/competencyPdf%2F%E4%B8%AA%E4%BA%BA%E8%81%8C%E4%B8%9A%E7%B4%A0%E5%85%BB%E7%BB%BC%E5%90%88%E6%B5%8B%E8%AF%84%E6%8A%A5%E5%91%8A1607770248864.pdf";
+    @GetMapping("/postCheckPrint2")
+    @ApiOperation(value = "下载文件", httpMethod = "GET")
+    public String postCheckPrint2() {
+        //String response = restTemplate.getForObject( String.format("https://www.baidu.com"), String.class);
+         ResponseEntity<byte[]> rsp =  restTemplate.getForEntity(downLoadUrl,byte[].class);
+         System.out.println("文件下载请求结果状态码：" + rsp.getStatusCode());
+        return    CommonResponseFactory.getInstance().success(ResultUtil.resultCode(200,"SUCCESS")).toString();
+    }
 }

@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/sys/TestController/postCheckPrint2").permitAll()
                 .antMatchers("/login","/user/login/come","/user/login/come2","login/out","/loginIn").permitAll()
                 .antMatchers("/swagger-ui.html#!/**").permitAll()
                 .antMatchers(
@@ -120,7 +121,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public  void  configure(AuthenticationManagerBuilder  auth)  throws  Exception{
         //调用DetailsService完成用户身份验证              设置密码加密方式
-//        auth.userDetailsService(myUserDetailsService);
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
 //        auth.userDetailsService(myUserDetailsService).passwordEncoder(new CustomPasswordEncoder());
         //这里可启用我们自己的登陆验证逻辑
         auth.authenticationProvider(userAuthenticationProvider);
